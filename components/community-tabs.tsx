@@ -166,19 +166,36 @@ export function CommunityTabs({ members, alumni, partners }: CommunityTabsProps)
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {member.interests && member.interests.length > 0 && (
+                  {member.interests && (() => {
+                    // Handle both array and string cases
+                    const interests = Array.isArray(member.interests) 
+                      ? member.interests 
+                      : typeof member.interests === 'string' 
+                        ? [member.interests] 
+                        : [];
+                    
+                    return interests.length > 0;
+                  })() && (
                     <div>
                       <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Interests:</p>
                       <div className="flex flex-wrap gap-2">
-                        {member.interests.map((interest, idx) => (
-                          <Badge
-                            key={idx}
-                            variant="outline"
-                            className="bg-[#7BAFD4]/10 text-[#7BAFD4] border-[#7BAFD4]/30 text-xs"
-                          >
-                            {interest}
-                          </Badge>
-                        ))}
+                        {(() => {
+                          const interests = Array.isArray(member.interests) 
+                            ? member.interests 
+                            : typeof member.interests === 'string' 
+                              ? [member.interests] 
+                              : [];
+                          
+                          return interests.map((interest, idx) => (
+                            <Badge
+                              key={idx}
+                              variant="outline"
+                              className="bg-[#7BAFD4]/10 text-[#7BAFD4] border-[#7BAFD4]/30 text-xs"
+                            >
+                              {interest}
+                            </Badge>
+                          ));
+                        })()}
                       </div>
                     </div>
                   )}
